@@ -19,5 +19,6 @@ $.ajaxSetup({
 
 $(document).ready(function() {
   App.router = new App.Router();
+  App.emptyContext = _.extend({}, Backbone.Events);
   Backbone.history.start({pushState: true});
 });

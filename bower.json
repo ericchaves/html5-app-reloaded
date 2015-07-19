@@ -3,12 +3,7 @@
   "private": true,
   "dependencies": {
     "backbone": "1.1.2",
-    "skeleton": "~2.0.4",
     "jquery": "~2.1.4"
   },
-  "overrides": {
-  "skeleton": {
-      "main" : "css/*.css"
-    }
-  }
+  "overrides": {}
 }

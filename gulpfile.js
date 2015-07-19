@@ -17,7 +17,7 @@ var onError = function (err) {
 };
 
 gulp.task('styles', function(){
-  return gulp.src('app/styles/*.less')
+  return gulp.src(['app/styles/*.less','!app/styles/_*.less'])
   .pipe($.plumber({ errorHandler: onError }))
   .pipe($.sourcemaps.init())
   .pipe($.less())
@@ -61,15 +61,15 @@ gulp.task('fonts', function () {
 gulp.task('injector', ['styles','templates'], function(){
   var styles      = gulp.src(['.tmp/**/*.css', ], {read: false}),
       templates   = gulp.src(['.tmp/scripts/templates.js'], {read: false}),
+      services    = gulp.src(['app/scripts/services/**/*.js'], {read: false}),
       collections = gulp.src(['app/scripts/collections/**/*.js'], {read: false}),
       models      = gulp.src(['app/scripts/models/**/*.js'], {read: false}),
       views       = gulp.src(['app/scripts/views/**/*.js'], {read: false}),
       config      = gulp.src(['app/config/' + nodeEnv + '.js'], {read: false}),
       router      = gulp.src(['app/scripts/router.js'], {read: false}),
       main        = gulp.src(['app/scripts/main.js'], {read: false}),
-      css         = gulp.src(['.tmp/styles/**/*.css']),
       bower       = gulp.src(bowerFiles(), {read: false});
-  var ordered = series(styles, templates, main, config, views, models, collections, router);
+  var ordered = series(styles, templates, main, config, services, views, models, collections, router);
   return gulp.src('app/index.html')
     .pipe($.plumber({ errorHandler: onError }))
     .pipe($.inject(bower, {name: 'bower'}))
@@ -122,12 +122,13 @@ gulp.task('serve', ['injector'], function(){
   gulp.watch([
     '.tmp/*.html',
     '.tmp/styles/**/*.css',
-    '.tmp/scripts/**/*.js',
-    'app/**/*.js'
+    'app/**/*.js',
+    'app/index.html'
   ]).on('change', reload);
 
   // watch for recompilation
   gulp.watch('app/styles/**/*.less', ['injector']);
+  gulp.watch('app/scripts/**/*.js', ['injector']);
   gulp.watch('app/templates/**/*.jst', ['templates']);
   gulp.watch('app/index.html', ['injector']);
 });

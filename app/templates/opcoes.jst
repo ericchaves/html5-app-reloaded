@@ -1,0 +1,99 @@
+<div class="row upper-notifier">
+    <div class="container">
+        {{? it.id }}
+        <span class="major">{{=it.name || ''}}</span>
+        <span class="minor">cpf: {{=it.cpf || ''}}</span>
+        {{?}}
+    </div>
+</div>
+
+<div class="row">
+    <div class="container lower-notifier">
+        {{? it.id }}
+        <div class="col-xs-12 col-sm-5 text-inside">
+            <h1 class="uppercase">Falta muito pouco!</h1>
+        </div>
+
+        <div class="col-xs-12 col-sm-7 text-inside">
+            <p>Escolha a melhor forma de pagamento e aproveite hoje esta promoção feita especialmente para você.</p>
+        </div>
+        {{??}}
+        <div class="col-xs-12 text-inside">
+            <h1 class="center-always">Não localizamos seu CPF no banco de dados.</h1>
+        </div>
+        {{?}}
+    </div>
+</div>
+
+<div class="row content">
+
+    <div class="container content {{= it.id ? '' : 'feedback'}}">
+        {{? !it.id }}
+        <div class="col-xs-12">
+            <div class="col-xs-12">
+                Favor <button class="button ms10">Entre em contato conosco</button> e retornaremos em até 48hrs.
+            </div>
+
+            <div class="col-xs-12 back">
+                <button class="submit" data-back>Voltar</button>
+            </div>
+        </div>
+        {{??}}
+        <div class="col-xs-12">
+            <table class="table table-striped">
+                <thead class="hidden-xs">
+                    <tr>
+                        <th>Opçoes de pagamento</th>
+                        <th>Valor com desconto</th>
+                        <th>Estou economizando</th>
+                        <th>Desconto</th>
+                        <th class="highlight">Vencimento 30/07/2015</th>
+                    </tr>
+
+                </thead>
+
+                <tbody class="parcelas">
+                    {{~it.debts[0].options :option:index}}
+                    <!--repeat template-->
+                    <tr>
+                        <td class="parcela">
+                            <div class="number">{{= option.installments }}X</div>
+                            <div class="text hidden-xs">
+                                {{? index }}
+                                <span>{{= option.installments.extenso() }} parcelas</span>
+                                <span>Iguais de: R$ {{= option.value }}</span>
+                                {{??}}
+                                <span>uma parcela</span>
+                                <span>De: R$ {{= option.value }}</span>
+                                {{?}}
+                            </div>
+                        </td>
+
+                        <td class="increased-text">
+                            <span class="de visible-xs">de:</span>
+                            <span class="valor">R$ {{= option.value * option.installments }}</span>
+                        </td>
+                        <td class="saving hidden-xs">R$ 1000,00</td>
+                        <td class="discount hidden-xs">
+                            <div>-30%</div>
+                        </td>
+                        <td class="buttons">
+                            <button class="submit">Gerar boleto</button>
+                        </td>
+                    </tr>
+                    {{~}}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-xs-12">
+            <div class="col-xs-12 col-sm-6 pull-right terms">
+                <input type="checkbox" />Li e estou ciente dos <em>termos de uso</em>
+            </div>
+            <div class="col-xs-12 col-sm-6 pull-left back">
+                <button class="submit" data-back>Voltar</button>
+            </div>
+        </div>
+        {{?}}
+    </div>
+</div>
